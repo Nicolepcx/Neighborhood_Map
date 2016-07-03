@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Geeky Map</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Page Styles and Font-->
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800" rel="stylesheet">
+        <link href='css/bootstrap.css' rel='stylesheet'>
+        <link href='css/style.css' rel='stylesheet'>
+    </head>
+    <body>
+        <header>
+            <h2>Places to visit in Silicon Valley</h2>
+                <section><img id="flickr" src="img/flickr.png" alt="Flickr Logo"></section>
+                <section id="weather-image-container">
+                    <img src="img/weather-underground.png" alt="Weather Underground Logo">
+                    <div class="forecast">
+                    <h4>Silicon Valley Weather Forecast</h4>
+                    <ul></ul>
+                    </div>
+                </section>
+    <section class="modal">
+        <div class="modal-images">
+            <img id="exit-modal" src="img/exit.jpeg" alt="Exit Button Image">
+            <div class="flickr-image-container" onload="scrollForward"></div>
+            <img id="right-arrow" src="img/right-arrow.png" alt="right-arrow">
+            <img id="left-arrow" src="img/left-arrow.png" alt="left-arrow">
+        </div>
+        </section>
+    </header>
+        <hr>
+        <main>
+            <div class="row">
+                <article class="col-md-3 ">
+                <label>Search: </label>
+                <input id="searchField" data-bind="event: {keyup: filter}" type="text" placeholder='search by name' value="">
+                    <hr>
+                    <ul class="locationList" data-bind="foreach: placeList">
+                        <li>
+                            <p><strong data-bind="text: name, click: $parent.show_details"></strong></p>
+                            <span data-bind="text: city"></span>
+                            <em><a data-bind="attr: { href: url }" target="_blank">visit Website</a></em>
+                        </li>
+                    </ul>
+                </article>
+                <article class="col-md-9">
+                    <section id="map" class="map"></section>
+                </article>
+            </div>
+        </main>
+        <footer>
+
+        </footer>
+    <!--Google Maps-->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
+    <!--JS & lib-->
+        <script src="scripts/knockout-3.4.0.js"></script>
+        <script src="scripts/mapsapplication.js"></script>
+    <!-- add async js source to avoid render blocking -->
+        <script async src="scripts/flickr.js"></script>
+        <script async src="scripts/weather.js"></script>
+        <script async src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    </body>
+</html>

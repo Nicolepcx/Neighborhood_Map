@@ -72,8 +72,8 @@ Leveraged [browser caching](https://developers.google.com/speed/docs/insights/Le
 
 #### References:
 
-* [A Visitor’s Map to Silicon Valley](https://www.google.com/maps/d/edit?mid=1maozsM2Rx4QulAQicgYwoiCaV-c"geek map")
-* [Daniel Botta | Neighborhood Map](http://dsbotta.github.io/Neighborhood-Map"dsbotta/Neighborhood-Map")
+* [A Visitor’s Map to Silicon Valley](https://www.google.com/maps/d/edit?mid=1maozsM2Rx4QulAQicgYwoiCaV-c "geek map")
+* [Daniel Botta | Neighborhood Map](http://dsbotta.github.io/Neighborhood-Map "dsbotta/Neighborhood-Map")
 
 #### Helpful Resoures:
 
@@ -81,16 +81,16 @@ Leveraged [browser caching](https://developers.google.com/speed/docs/insights/Le
 * [jQuery](http://api.jquery.com/ "jQuery")
 * [W3Schools](http://www.w3schools.com/ "w3schools")
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/tutorial "google maps")
-* [Google Maps Course Udacity](https://www.udacity.com/course/google-maps-apis--ud864"google maps Udacity")
+* [Google Maps Course Udacity](https://www.udacity.com/course/google-maps-apis--ud864 "google maps Udacity")
 * [Stackoverflow](http://stackoverflow.com/ "Stackoverflow")
 * [Flickr-Api Documentation](https://www.flickr.com/services/api/ "flickr doc")
 * [Weatherunderground-Api Documentation](https://www.wunderground.com/weather/api/d/docs "weatherunderground doc")
-* [Codeproject](http://www.codeproject.com/Articles/387626/BikeInCity-KnockoutJS-JQuery-Google-Maps"codeproject")
-* [CSS Tricks](https://css-tricks.com/almanac/properties/z/z-index/"css tricks")
-* [Packt Publishing](https://www.packtpub.com/books/content/using-google-maps-apis-knockoutjs"Maps/Knockout")
-* [Validate html](https://validator.w3.org/"validate html")
-* [CSS Validator](https://jigsaw.w3.org/css-validator/"CSS Validator")
-* [JS Validator](http://www.javascriptlint.com/online_lint.php"JS Validator")
+* [Codeproject](http://www.codeproject.com/Articles/387626/BikeInCity-KnockoutJS-JQuery-Google-Maps "codeproject")
+* [CSS Tricks](https://css-tricks.com/almanac/properties/z/z-index/ "css tricks")
+* [Packt Publishing](https://www.packtpub.com/books/content/using-google-maps-apis-knockoutjs "Maps/Knockout")
+* [Validate html](https://validator.w3.org/ "validate html")
+* [CSS Validator](https://jigsaw.w3.org/css-validator/ "CSS Validator")
+* [JS Validator](http://www.javascriptlint.com/online_lint.php "JS Validator")
 
 
 

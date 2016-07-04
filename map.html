@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Page Styles and Font-->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800" rel="stylesheet">
-        <link href='css/bootstrap.css' rel='stylesheet'>
-        <link href='css/style.css' rel='stylesheet'>
+        <link href='css/bootstrap.min.css' rel='stylesheet'>
+        <link href='css/style.min.css' rel='stylesheet'>
     </head>
     <body>
         <header>
@@ -33,7 +33,8 @@
         <main>
             <div class="row">
                 <article class="col-md-3 ">
-                <label>Search: </label>
+<!-- Search -->
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                 <input id="searchField" data-bind="event: {keyup: filter}" type="text" placeholder='search by name' value="">
                     <hr>
                     <ul class="locationList" data-bind="foreach: placeList">
@@ -52,12 +53,12 @@
         <footer>
 
         </footer>
-    <!--Google Maps-->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
-    <!--JS & lib-->
+<!--Google Maps async-->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
+<!--JS & lib-->
         <script src="scripts/knockout-3.4.0.js"></script>
-        <script src="scripts/mapsapplication.js"></script>
-    <!-- add async js source to avoid render blocking -->
+        <script src="scripts/mapsapplication.min.js"></script>
+<!-- add async js source to avoid render blocking -->
         <script async src="scripts/flickr.js"></script>
         <script async src="scripts/weather.js"></script>
         <script async src="http://code.jquery.com/jquery-1.12.4.min.js"></script>

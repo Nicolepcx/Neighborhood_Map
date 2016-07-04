@@ -4,7 +4,87 @@ var map;
 //Creates a marker for each location
 var marker;
 
-//Locations to visit
+// Creates a new map an changes the styles and color
+function initMap() {
+    var styles = [
+          {
+            featureType: 'water',
+            stylers: [
+              { color: '#29b2ea' }
+            ]
+          },{
+            featureType: 'administrative',
+            elementType: 'labels.text.stroke',
+            stylers: [
+              { color: '#ffffff' },
+              { weight: 4 }
+            ]
+          },{
+            featureType: 'administrative',
+            elementType: 'labels.text.fill',
+            stylers: [
+              { color: '#e85113' }
+            ]
+          },{
+            featureType: 'road.highway',
+            elementType: 'geometry.stroke',
+            stylers: [
+              { color: '#efe9e4' },
+              { lightness: -40 }
+            ]
+          },{
+            featureType: 'transit.station',
+            stylers: [
+              { weight: 9 },
+              { hue: '#13c7e8' }
+            ]
+          },{
+            featureType: 'road.highway',
+            elementType: 'labels.icon',
+            stylers: [
+              { visibility: 'off' }
+            ]
+          },{
+            featureType: 'water',
+            elementType: 'labels.text.stroke',
+            stylers: [
+              { lightness: 100 }
+            ]
+          },{
+            featureType: 'water',
+            elementType: 'labels.text.fill',
+            stylers: [
+              { lightness: -100 }
+            ]
+          },{
+            featureType: 'poi',
+            elementType: 'geometry',
+            stylers: [
+              { visibility: 'on' },
+              { color: '#f0e4d3' }
+            ]
+          },{
+            featureType: 'road.highway',
+            elementType: 'geometry.fill',
+            stylers: [
+              { color: '#efe9e4' },
+              { lightness: -35 }
+            ]
+          }
+        ];
+    var mapOptions = {
+        zoom: 11,
+        center: new google.maps.LatLng(37.387474, -122.057543),
+        mapTypeControl: true,
+        disableDefaultUI: false,
+        styles: styles,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: true
+    };
+
+map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+//Locations to list mark on map
 var geekyPlaces = [
     {
         name: "Ames Research Center",
@@ -64,7 +144,6 @@ var geekyPlaces = [
     }
 ];
 
-
 //Sets the Knockout.js observables
 var Place = function(data, foursquare){
     this.name = ko.observable(data.name);
@@ -80,32 +159,15 @@ var Place = function(data, foursquare){
     this.country = ko.observable();
 };
 
-// Creates a new map
-function init() {
-    var mapOptions = {
-        zoom: 11,
-        center: new google.maps.LatLng(37.387474, -122.057543),
-        mapTypeControl: true,
-        disableDefaultUI: false,
-        mapTypeId: google.maps.MapTypeId.TERRAIN,
-        streetViewControl: true
-    };
-
-map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-// overlays the map with the traffic layer
-var trafficLayer = new google.maps.TrafficLayer();
-  trafficLayer.setMap(map);
-
 //View Model
 var ViewModel = function() {
-    var match = this;
+    var self = this;
 
-    this.placeList = ko.observableArray([]);
+    self.placeList = ko.observableArray([]);
 
-//Creates objects for each item in the geekyPlaces
+//Creates objects for each item in the Location Array
     geekyPlaces.forEach(function(locationItem){
-        match.placeList.push( new Place(locationItem) );
+        self.placeList.push(new Place(locationItem) );
     });
 
 //Creates a new infowindow object
@@ -117,7 +179,7 @@ var defaultIcon = makeMarkerIcon('0091ff');
 // Changes the marker style to "highlighted " marker by mouseover.
 var highlightedIcon = makeMarkerIcon('07eee6');
 
-    match.placeList().forEach(function(locationItem){
+    self.placeList().forEach(function(locationItem){
 
         marker = new google.maps.Marker({
             position: new google.maps.LatLng(locationItem.lat(),locationItem.lng()),
@@ -129,16 +191,16 @@ var highlightedIcon = makeMarkerIcon('07eee6');
 
         locationItem.marker = marker;
 
-        //JSON get foursquaredata
-        var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' + locationItem.lat() + ',' + locationItem.lng() + '&intent=match&query=' + locationItem.name() + '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
-        var results, name, rating, streetName, city;
+//JSON get foursquaredata
+
+        var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' + locationItem.lat() + ',' + locationItem.lng() + '&intent=self&query=' + locationItem.name() + '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
         $.getJSON(foursquareUrl, function(data){
             results = data.response.groups[0].items[0].venue;
             locationItem.name = results.name;
             locationItem.rating = results.rating;
             locationItem.checkinCount = results.stats.checkinsCount;
         }).error(function(e){
-            $('#foursquare-API-error').html('<h2>There is an errors when retrieving the data. Please try refresh page or try later.</h2>');
+            $('#foursquare-API-error').html('<h2>There was an errors when retrieving the data. Please try refresh page or try again later.</h2>');
         });
 
           // Two event listeners to change the marker color one for mouseover, one for mouseout,
@@ -149,7 +211,7 @@ var highlightedIcon = makeMarkerIcon('07eee6');
             this.setIcon(defaultIcon);
           });
 
- //bounce animation on the marker
+//bounce animation on the marker
         function Bounce() {
             if(locationItem.marker.getAnimation() === null) {
                 locationItem.marker.setAnimation(null);
@@ -158,20 +220,24 @@ var highlightedIcon = makeMarkerIcon('07eee6');
             }
         }
 
-
-// By click animate the marker and then show the infowindow
+// By clicking the marker it and then show the infowindow
         google.maps.event.addListener(locationItem.marker, 'click', function(){
             Bounce();
-            setTimeout(Bounce, 50);
+            setTimeout(Bounce, 600);
             setTimeout(function(){
-                infowindow.setContent('<h3>' + locationItem.name + '</h3>\n<h5>FourSquare-Infos:</h5>\n<p><b>Rating: </b>' + locationItem.rating + '</p>\n<p><b>Check Ins: </b>' + locationItem.checkinCount);
+                infowindow.setContent('<h3>' + locationItem.name + '</h3>\n<h5>FourSquare-Infos:</h5>\n<p><span class="glyphicon glyphicon-thumbs-up"></span> <span>: </span>' + locationItem.rating + '</p>\n<p><span class="glyphicon glyphicon-home"></span> <span>: </span>' + locationItem.checkinCount);
                 infowindow.open(map, locationItem.marker);
                 map.setZoom(14);
-            }, 200);
+            }, 100);
         });
+
+// Makes sure the marker property is cleared if the infowindow is closed.
+            infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+          });
     });
 
-// This function takes in a COLOR, and then creates a new marker
+// This function takes in a color, and then creates a new marker
       function makeMarkerIcon(markerColor) {
         var markerImage = new google.maps.MarkerImage(
           'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
@@ -183,28 +249,37 @@ var highlightedIcon = makeMarkerIcon('07eee6');
         return markerImage;
       }
 
-    //opens the marker if clicked
-    match.show_details = function(locationItem){
+//opens the marker if clicked
+    self.show_details = function(locationItem){
         google.maps.event.trigger(locationItem.marker,'click');
     };
 
 //Filters map markers
-    match.filter = function() {
+    self.filter = function() {
     var search = $('#searchField').val();
     console.log(search.toLowerCase().replace(/\b[a-z]/g,"kc"));
-    search = search.toLowerCase().replace(/\b[a-z]/g, function(match) {
-        console.log(match.toUpperCase());
-        return match.toUpperCase();
+    search = search.toLowerCase().replace(/\b[a-z]/g, function(self) {
+        console.log(self.toUpperCase());
+        return self.toUpperCase();
     }); $(".locList > li").each(function() {
         console.log(this);
-        $(this).text().search(search) > -1 ? $(this).show() : $(this).hide();
     });
-    for(var i = 0; i < match.placeList().length; i++) {
-        console.log(match.map);
-        match.placeList()[i].marker.setMap(match.placeList()[i].marker.title.search(search) > -1 ? map : null);
+    for(var i = 0; i < self.placeList().length; i++) {
+        console.log(self.map);
+        self.placeList()[i].marker.setMap(self.placeList()[i].marker.title.search(search) > -1 ? map : null);
         }
     };
 };
+
+var viewModel = {
+    query: ko.observable('')
+};
+
+//static method to listen to and bind to DOM events
+    google.maps.event.addDomListener(window,'resize', function(){
+        map.setCenter(new google.maps.LatLng(37.387474, -122.057543));
+    });
+
 
 //JSON get weather.underground-infos | //Display message if error getting weatherunderground JSON
 var weatherUrl = "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json";
@@ -223,7 +298,7 @@ var weatherContainer = $("#weather-image-container");
 var WeatherisVisible = false;
 weatherContainer.dblclick(function() {
     if(WeatherisVisible === false) {
-        if($(window).width() < 768) {
+        if($(window).width() < 320) {
             $(".forecast div").css("display", "center");
             weatherContainer.animate({
                 width: "320"
@@ -316,6 +391,7 @@ function setFlickrImages() {
 }
 $("#flickr").click(setFlickrImages);
 
+
 //Bind click handler to arrow button to view next image
 function scrollForward() {
   $('#flickr-image' + counter).hide();
@@ -323,7 +399,7 @@ function scrollForward() {
   if(counter >= 199) {
     counter = 0;
   }
-  $('#flickr-image' + counter).fadeIn(200);
+  $('#flickr-image' + counter).fadeIn(400);
 }
 
 //Bind click handler to arrow button to view previous image
@@ -333,25 +409,20 @@ function scrollBackWard() {
   if(counter < 0) {
     counter = 199;
   }
-  $('#flickr-image' + counter).fadeIn(200);
+  $('#flickr-image' + counter).fadeIn(400);
 }
 
 $("#right-arrow").click(scrollForward);
 $("#left-arrow").click(scrollBackWard);
-
-var viewModel = {
-    query: ko.observable('')
-};
-
-    google.maps.event.addDomListener(window,'resize', function(){
-        map.setCenter(new google.maps.LatLng(37.387474, -122.057543));
-    });
 
 
 //apply the bindings
     ko.applyBindings(new ViewModel());
 }
 
-google.maps.event.addDomListener(window,'load',init);
+// Map initialization
+google.maps.event.addDomListener(window,'load',initMap);
+
+
 
 

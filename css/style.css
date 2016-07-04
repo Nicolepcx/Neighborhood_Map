@@ -1,22 +1,6 @@
 
 /* Generic Styles */
 
-/*css for social icons */
-[class*="zocial-"]:before {
-    color: #850ad3;
-    display: inline-block;
-    font-family: "zocial", sans-serif;
-    text-shadow: 2px 2px 2px #aaa;
-    width: 2em;
-}
-[class*="brandico-"]:before {
-    color: #850ad3;
-    display: inline-block;
-    font-family: "brandico", sans-serif;
-    text-shadow: 2px 2px 2px #aaa;
-    width: 2em;
-}
-
 *{
     font-family: 'Open Sans', sans-serif;
 }
@@ -24,7 +8,7 @@
 h2 {
     text-align: center;
     color: #0091ff;
-    font-size: 3em;
+    font-size: 2.6em;
     font-weight: 800;
 }
 
@@ -69,6 +53,7 @@ li {
     color: #6a6f6f;
       }
 
+/* Container Styles & icons styles */
 .weather-container {
     position: absolute;
     z-index: 4;
@@ -124,7 +109,7 @@ li {
 }
 
 .forecast div {
-    display: block;
+    display: inline-block;
     margin: 0 12px;
     padding: 0;
     font-size: 0.6em;
@@ -180,8 +165,8 @@ li {
 }
 
 #exit-modal {
-    margin-left: 90%;
-    margin-top: -10px;
-    width: 7%;
+    margin-left: 92%;
+    margin-top: -12px;
+    width: 6%;
     border-radius: 50%;
 }

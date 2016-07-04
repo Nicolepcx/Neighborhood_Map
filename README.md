@@ -70,9 +70,10 @@ Enable the [mod_deflate](http://httpd.apache.org/docs/2.2/mod/mod_deflate.html) 
 Leveraged [browser caching](https://developers.google.com/speed/docs/insights/LeverageBrowserCaching) by including an [.htaccess](http://httpd.apache.org/docs/2.2/howto/htaccess.html) file in the root of the website. The file contains expires headers, which sets long expiration times for all CSS, JavaScript and images.
 
 
-#### Inspiration:
+#### References:
 
 * [A Visitor’s Map to Silicon Valley](https://www.google.com/maps/d/edit?mid=1maozsM2Rx4QulAQicgYwoiCaV-c"geek map")
+* [Daniel Botta | Neighborhood Map](http://dsbotta.github.io/Neighborhood-Map"dsbotta/Neighborhood-Map")
 
 #### Helpful Resoures:
 
@@ -80,6 +81,7 @@ Leveraged [browser caching](https://developers.google.com/speed/docs/insights/Le
 * [jQuery](http://api.jquery.com/ "jQuery")
 * [W3Schools](http://www.w3schools.com/ "w3schools")
 * [Google Maps](https://developers.google.com/maps/documentation/javascript/tutorial "google maps")
+* [Google Maps Course Udacity](https://www.udacity.com/course/google-maps-apis--ud864"google maps Udacity")
 * [Stackoverflow](http://stackoverflow.com/ "Stackoverflow")
 * [Flickr-Api Documentation](https://www.flickr.com/services/api/ "flickr doc")
 * [Weatherunderground-Api Documentation](https://www.wunderground.com/weather/api/d/docs "weatherunderground doc")

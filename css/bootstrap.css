@@ -6180,19 +6180,4 @@ button.close {
     display: none !important;
   }
 }
-@media screen and (max-width: 670px) {
-    .forecast h3 {
-        display: none;
-    }
 
-    .forecast li {
-        margin: 0 1px;
-    }
-}
-
-@media screen and (min-width: 320px) {
-    .flickr-image-container img {
-        display: none;
-
-
-    }

@@ -1,3 +1,4 @@
+
 //map
 var map;
 
@@ -72,6 +73,7 @@ function initMap() {
             ]
           }
         ];
+
     var mapOptions = {
         zoom: 11,
         center: new google.maps.LatLng(37.387474, -122.057543),
@@ -84,7 +86,8 @@ function initMap() {
 
 map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
-//Locations to list mark on map
+
+//Locations to visit
 var geekyPlaces = [
     {
         name: "Ames Research Center",
@@ -144,6 +147,7 @@ var geekyPlaces = [
     }
 ];
 
+
 //Sets the Knockout.js observables
 var Place = function(data, foursquare){
     this.name = ko.observable(data.name);
@@ -159,37 +163,40 @@ var Place = function(data, foursquare){
     this.country = ko.observable();
 };
 
-//View Model
-var ViewModel = function() {
-    var self = this;
 
-    self.placeList = ko.observableArray([]);
+
+var ViewModel = function() {
+  var self = this;
+
+  this.placeList = ko.observableArray([]);
+
 
 //Creates objects for each item in the Location Array
-    geekyPlaces.forEach(function(locationItem){
-        self.placeList.push(new Place(locationItem) );
+  geekyPlaces.forEach(function(locationItem){
+    self.placeList.push( new Place(locationItem) );
+  });
+
+  //Creates a new infowindow
+  var infowindow = new google.maps.InfoWindow();
+
+  // Changes the marker style.
+  var defaultIcon = makeMarkerIcon('0091ff');
+
+  // Changes the marker style to "highlighted " marker by mouseover.
+    var highlightedIcon = makeMarkerIcon('07eee6');
+
+
+  self.placeList().forEach(function(locationItem){
+
+    marker = new google.maps.Marker({
+      position: new google.maps.LatLng(locationItem.lat(),locationItem.lng()),
+      map: map,
+      animation: google.maps.Animation.DROP,
+      icon: defaultIcon,
+      title: locationItem.name()
     });
+    locationItem.marker = marker;
 
-//Creates a new infowindow object
-var infowindow = new google.maps.InfoWindow();
-
-// Changes the marker style.
-var defaultIcon = makeMarkerIcon('0091ff');
-
-// Changes the marker style to "highlighted " marker by mouseover.
-var highlightedIcon = makeMarkerIcon('07eee6');
-
-    self.placeList().forEach(function(locationItem){
-
-        marker = new google.maps.Marker({
-            position: new google.maps.LatLng(locationItem.lat(),locationItem.lng()),
-            map: map,
-            animation: google.maps.Animation.DROP,
-            icon: defaultIcon,
-            title: locationItem.name()
-        });
-
-        locationItem.marker = marker;
 
 //JSON get foursquaredata
 
@@ -203,7 +210,8 @@ var highlightedIcon = makeMarkerIcon('07eee6');
             $('#foursquare-API-error').html('<h2>There was an errors when retrieving the data. Please try refresh page or try again later.</h2>');
         });
 
-          // Two event listeners to change the marker color one for mouseover, one for mouseout,
+          // Two event listeners - one for mouseover, one for mouseout,
+          // to change the colors back and forth.
           marker.addListener('mouseover', function() {
             this.setIcon(highlightedIcon);
           });
@@ -211,35 +219,55 @@ var highlightedIcon = makeMarkerIcon('07eee6');
             this.setIcon(defaultIcon);
           });
 
-//bounce animation on the marker
-        function Bounce() {
-            if(locationItem.marker.getAnimation() === null) {
-                locationItem.marker.setAnimation(null);
-            } else {
-                locationItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-            }
-        }
+    //Toggles the bounce animation on the marker
+    function toggleBounce() {
+      if(locationItem.marker.getAnimation() !== null) {
+        locationItem.marker.setAnimation(null);
+      } else {
+        locationItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+      }
+    }
 
-// By clicking the marker it and then show the infowindow
-        google.maps.event.addListener(locationItem.marker, 'click', function(){
-            Bounce();
-            setTimeout(Bounce, 600);
-            setTimeout(function(){
+
+
+// By click animate the marker and then show the infowindow
+    google.maps.event.addListener(locationItem.marker, 'click', function(){
+      toggleBounce();
+      setTimeout(toggleBounce, 1000);
+      setTimeout(function(){
                 infowindow.setContent('<h3>' + locationItem.name + '</h3>\n<h5>FourSquare-Infos:</h5>\n<p><span class="glyphicon glyphicon-thumbs-up"></span> <span>: </span>' + locationItem.rating + '</p>\n<p><span class="glyphicon glyphicon-home"></span> <span>: </span>' + locationItem.checkinCount);
                 infowindow.open(map, locationItem.marker);
-                map.setZoom(14);
-            }, 100);
-        });
-
-
-var geekyPlaces = new google.maps.LatLng(37.387474, -122.057543);
-
-// Zooms out, after the infowindow is closed.
-            infowindow.addListener('closeclick', function() {
-            map.panTo(geekyPlaces);
-            map.setZoom(11);
-          });
+        map.setZoom(14);
+      }, 200);
     });
+  });
+
+
+//opens the marker if clicked
+  self.show_info = function(locationItem){
+    google.maps.event.trigger(locationItem.marker,'click');
+  };
+
+
+
+//Filters map markers
+  self.filter = function() {
+    var s = $('#searchField').val();
+    console.log(s.toLowerCase().replace(/\b[a-z]/g,"KC"));
+    s = s.toLowerCase().replace(/\b[a-z]/g, function(self) {
+      console.log(self.toUpperCase());
+      return self.toUpperCase();
+    });
+    $(".locationList > li").each(function() {
+      console.log(this);
+      $(this).text().search(s) > -1 ? $(this).show() : $(this).hide();
+    });
+    for(var i = 0; i < self.placeList().length; i++) {
+      console.log(self.map);
+      self.placeList()[i].marker.setMap(self.placeList()[i].marker.title.search(s) > -1 ? map : null);
+    }
+  };
+};
 
 // This function takes in a color, and then creates a new marker
       function makeMarkerIcon(markerColor) {
@@ -253,36 +281,9 @@ var geekyPlaces = new google.maps.LatLng(37.387474, -122.057543);
         return markerImage;
       }
 
-//opens the marker if clicked
-    self.show_details = function(locationItem){
-        google.maps.event.trigger(locationItem.marker,'click');
-    };
-
-//Filters map markers
-    self.filter = function() {
-    var search = $('#searchField').val();
-    console.log(search.toLowerCase().replace(/\b[a-z]/g,"kc"));
-    search = search.toLowerCase().replace(/\b[a-z]/g, function(self) {
-        console.log(self.toUpperCase());
-        return self.toUpperCase();
-    }); $(".locList > li").each(function() {
-        console.log(this);
-    });
-    for(var i = 0; i < self.placeList().length; i++) {
-        console.log(self.map);
-        self.placeList()[i].marker.setMap(self.placeList()[i].marker.title.search(search) > -1 ? map : null);
-        }
-    };
-};
-
-var viewModel = {
-    query: ko.observable('')
-};
-
-//static method to listen to and bind to DOM events
-    google.maps.event.addDomListener(window,'resize', function(){
-        map.setCenter(new google.maps.LatLng(37.387474, -122.057543));
-    });
+  google.maps.event.addDomListener(window,'resize', function(){
+    map.setCenter(new google.maps.LatLng(37.387474, -122.057543));
+  });
 
 
 //JSON get weather.underground-infos | //Display message if error getting weatherunderground JSON
@@ -300,7 +301,7 @@ $.getJSON(weatherUrl, function(data) {
 //Handels the weather container
 var weatherContainer = $("#weather-image-container");
 var WeatherisVisible = false;
-weatherContainer.dblclick(function() {
+weatherContainer.click(function() {
     if(WeatherisVisible === false) {
         if($(window).width() < 320) {
             $(".forecast div").css("display", "center");
@@ -322,111 +323,9 @@ weatherContainer.dblclick(function() {
     }
 });
 
-
-var flickrJSON;
-
-//Binds click handler to flickr image to open modal
-$("#flickr").click(function() {
-    $(".modal").css("z-index", "4");
-    $(".modal").show();
-});
-
-//Binds click handler to x button to close modal
-$("#exit-modal").click(function() {
-    $(".modal").css("z-index", "4");
-    $(".modal").hide();
-    $('.flickr-image-container img').hide();
-    SetflickrImages = true;
-});
-
-//jQuery fix for older Browser--> Index
-$(function() {
-       var zIndexNumber = 1000;
-       // Put your target element(s) in the selector below!
-       $("div").each(function() {
-               $(this).css('zIndex', zIndexNumber);
-               zIndexNumber -= 10;
-       });
-});
-
-//GET JSON from flickr
-function getFlickrImages() {
-    var flickrUrl = 'https://api.flickr.com/services/rest/?method=flickr.photos.search&api_key=4de575dcd8b72dea79a16af98619fdcc&text=Silicon+Valley&accuracy=16&lat=37.387474&lon=-122.057543&format=json';
-        $.ajax({
-            url: flickrUrl,
-            dataType: 'jsonp',
-            jsonp: 'jsoncallback',
-            success: function(data) {
-                var photo = data.photos.photo;
-                flickrJSON = photo;
-            },
-//Display message if error getting flickr JSON
-            error: function() {
-        $('.flickr-image-container').append('<h2 style="text-align: center;">Error!</h2><br><p style="text-align: center;"> Images could not be loaded pls try again later!</p>');
-        $("#right-arrow").hide();
-        $("#left-arrow").hide();
-
-        }
-        });
-}
-getFlickrImages();
-
-
-var flickrPhotoArray = [];
-var counter = 0;
-var SetflickrImages = false;
-
-//Shows 200 random images from flickr
-function setFlickrImages() {
-  if(SetflickrImages === false) {
-    for(var i=0; i < 200; i++) {
-      var number = Math.floor((Math.random() * 250) + 1);
-      var photo = 'https://farm' + flickrJSON[number].farm + '.staticflickr.com/' + flickrJSON[number].server + '/' + flickrJSON[number].id + '_' + flickrJSON[number].secret + '.jpg';
-      flickrPhotoArray.push(photo);
-      $('.flickr-image-container').append('<img id="flickr-image' + i + '" src="' + photo + '" alt="' + flickrJSON[number].title + ' Flickr Image">');
-      $("#flickr-image" + i).hide();
-      if(i < 1) {
-        $("#flickr-image" + i).show();
-      }
-    }
-  } else {
-    $("#flickr-image" + counter).show();
-  }
-}
-$("#flickr").click(setFlickrImages);
-
-
-//Bind click handler to arrow button to view next image
-function scrollForward() {
-  $('#flickr-image' + counter).hide();
-  counter += 1;
-  if(counter >= 199) {
-    counter = 0;
-  }
-  $('#flickr-image' + counter).fadeIn(400);
+// binding handler that init the ViewModel
+  ko.applyBindings(new ViewModel());
 }
 
-//Bind click handler to arrow button to view previous image
-function scrollBackWard() {
-  $('#flickr-image' + counter).hide();
-  counter -= 1;
-  if(counter < 0) {
-    counter = 199;
-  }
-  $('#flickr-image' + counter).fadeIn(400);
-}
-
-$("#right-arrow").click(scrollForward);
-$("#left-arrow").click(scrollBackWard);
-
-
-//apply the bindings
-    ko.applyBindings(new ViewModel());
-}
-
-// Map initialization
+//execute the init function when the DOM is ready
 google.maps.event.addDomListener(window,'load',initMap);
-
-
-
-

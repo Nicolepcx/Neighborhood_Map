@@ -12,7 +12,6 @@
     <body>
         <header>
             <h2>Places to visit in Silicon Valley</h2>
-                <section><img id="flickr" src="img/flickr.png" alt="Flickr Logo"></section>
                 <section id="weather-image-container">
                     <img src="img/weather-underground.png" alt="Weather Underground Logo">
                     <div class="forecast">
@@ -20,14 +19,6 @@
                     <ul></ul>
                     </div>
                 </section>
-    <section class="modal">
-        <div class="modal-images">
-            <img id="exit-modal" src="img/exit.jpeg" alt="Exit Button Image">
-            <div class="flickr-image-container" onload="scrollForward"></div>
-            <img id="right-arrow" src="img/right-arrow.png" alt="right-arrow">
-            <img id="left-arrow" src="img/left-arrow.png" alt="left-arrow">
-        </div>
-        </section>
     </header>
         <hr>
         <main>
@@ -35,8 +26,7 @@
                 <article class="col-md-3 ">
 <!-- Search -->
         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                <input id="searchField" data-bind="event: {keyup: filter}" type="text" placeholder='search by name' value="">
-
+                <input id="searchField" data-bind="event: {keyup: filter}" type="text" placeholder='search by name or city' value="">
                     <hr>
                     <ul class="locationList" data-bind="foreach: placeList">
                         <li>
@@ -50,6 +40,7 @@
                     <section id="map" class="map"></section>
                 </article>
             </div>
+
         </main>
         <footer>
 
@@ -58,10 +49,8 @@
         <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
 <!--JS & lib-->
         <script src="scripts/knockout-3.4.0.js"></script>
-        <script src="scripts/mapsapplication.min.js"></script>
+        <script async src="scripts/mapsapplication.min.js"></script>
 <!-- add async js source to avoid render blocking -->
-        <script async src="scripts/flickr.js"></script>
-        <script async src="scripts/weather.js"></script>
         <script async src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
     </body>
 </html>

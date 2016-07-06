@@ -231,9 +231,13 @@ var highlightedIcon = makeMarkerIcon('07eee6');
             }, 100);
         });
 
-// Makes sure the marker property is cleared if the infowindow is closed.
+
+var geekyPlaces = new google.maps.LatLng(37.387474, -122.057543);
+
+// Zooms out, after the infowindow is closed.
             infowindow.addListener('closeclick', function() {
-            infowindow.marker = null;
+            map.panTo(geekyPlaces);
+            map.setZoom(11);
           });
     });
 

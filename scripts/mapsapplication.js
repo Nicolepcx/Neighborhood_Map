@@ -84,69 +84,6 @@ function initMap() {
         streetViewControl: true
     };
 
-map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-
-//Locations to visit
-var geekyPlaces = [
-    {
-        name: "Ames Research Center",
-        lat: 37.414869,
-        lng: -122.048589,
-        url: "https://www.nasa.gov/centers/ames/home/index.html",
-        city: "Mountain View"
-    },
-    {
-        name: "The Computer History Museum",
-        lat: 37.41441,
-        lng: -122.07699,
-        url: "http://www.computerhistory.org/",
-        city: "Mountain View"
-    },
-    {
-        name: "The Tech Museum",
-        lat: 37.3999,
-        lng: -122.10840,
-        url: "http://www.thetech.org",
-        city: "San Jose"
-    },
-    {
-        name: "HP Garage",
-        lat: 37.44303,
-        lng: -122.15466,
-        url: "http://www8.hp.com",
-        city: "Palo Alto"
-    },
-    {
-        name: "Steve Jobs Garage",
-        lat: 37.34035,
-        lng: -122.06895,
-        url: "http://www.apple.com/stevejobs/",
-        city: "Los Altos"
-    },
-    {
-        name: "Apple Headquarters",
-        lat: 37.33144,
-        lng: -122.03063,
-        url: "http://www.apple.com",
-        city: "Cupertino"
-    },
-    {
-        name: "Facebook Headquarters",
-        lat: 37.48319,
-        lng: -122.15011,
-        url: "http://www.facebook.com",
-        city: "Menlo Park"
-    },
-    {
-        name: "Google Headquarters",
-        lat: 37.4214,
-        lng: -122.08537,
-        url: "https://www.google.com/about/company/",
-        city: "Mountain View"
-    }
-];
-
 
 //Sets the Knockout.js observables
 var Place = function(data, foursquare){
@@ -155,14 +92,15 @@ var Place = function(data, foursquare){
     this.lng = ko.observable(data.lng);
     this.city = ko.observable(data.city);
     this.url = ko.observable(data.url);
+    this.s = ko.observableArray([]);
     this.marker = ko.observable();
     this.rating = ko.observable();
     this.checkinCount = ko.observable();
     this.state = ko.observable();
     this.postCode = ko.observable();
     this.country = ko.observable();
+    this.localWeather = ko.observable();
 };
-
 
 
 var ViewModel = function() {
@@ -200,15 +138,22 @@ var ViewModel = function() {
 
 //JSON get foursquaredata
 
-        var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' + locationItem.lat() + ',' + locationItem.lng() + '&intent=self&query=' + locationItem.name() + '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
+        var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' +
+                              locationItem.lat() + ',' + locationItem.lng() +
+                              '&intent=self&query=' + locationItem.name() +
+                              '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
         $.getJSON(foursquareUrl, function(data){
             results = data.response.groups[0].items[0].venue;
             locationItem.name = results.name;
             locationItem.rating = results.rating;
+            locationItem.rating = results.rating ? results.rating : "Rating unavailable";
             locationItem.checkinCount = results.stats.checkinsCount;
-        }).error(function(e){
+            locationItem.rcheckinCount = results.stats.checkinsCount ? results.stats.checkinsCount : "Check ins unavailable";
+        }).error(function(data){
             $('#foursquare-API-error').html('<h2>There was an errors when retrieving the data. Please try refresh page or try again later.</h2>');
         });
+
+
 
           // Two event listeners - one for mouseover, one for mouseout,
           // to change the colors back and forth.
@@ -235,7 +180,11 @@ var ViewModel = function() {
       toggleBounce();
       setTimeout(toggleBounce, 1000);
       setTimeout(function(){
-                infowindow.setContent('<h3>' + locationItem.name + '</h3>\n<h5>FourSquare-Infos:</h5>\n<p><span class="glyphicon glyphicon-thumbs-up"></span> <span>: </span>' + locationItem.rating + '</p>\n<p><span class="glyphicon glyphicon-home"></span> <span>: </span>' + locationItem.checkinCount);
+                infowindow.setContent('<h3>' + locationItem.name +
+                '</h3>\n<h5>FourSquare-Infos:</h5>\n<p><span class="glyphicon glyphicon-thumbs-up"></span> <span>: </span>' +
+                locationItem.rating +
+                '</p>\n<p><span class="glyphicon glyphicon-home"></span> <span>: </span>' +
+                locationItem.checkinCount);
                 infowindow.open(map, locationItem.marker);
         map.setZoom(14);
       }, 200);
@@ -248,6 +197,10 @@ var ViewModel = function() {
     google.maps.event.trigger(locationItem.marker,'click');
   };
 
+infowindow.addListener('closeclick', function() {
+            infowindow.marker = null;
+            map.setZoom(12);
+          });
 
 
 //Filters map markers
@@ -286,46 +239,24 @@ var ViewModel = function() {
   });
 
 
-//JSON get weather.underground-infos | //Display message if error getting weatherunderground JSON
-var weatherUrl = "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json";
-
-$.getJSON(weatherUrl, function(data) {
-    var list = $(".forecast ul");
-    detail = data.current_observation;
-    list.append('<div>Temperature: ' + detail.temp_c + '° C</div>');
-    list.append('<div><img style="width: 30px" src="' + detail.icon_url + '"> ' + detail.icon + '</div>');
-}).error(function(e){
-        $(".forecast").append('<p style="text-align: center;">Sorry! Weather Underground</p><p style="text-align: center;">Could Not Be Loaded</p>');
-    });
-
-//Handels the weather container
-var weatherContainer = $("#weather-image-container");
-var WeatherisVisible = false;
-weatherContainer.click(function() {
-    if(WeatherisVisible === false) {
-        if($(window).width() < 320) {
-            $(".forecast div").css("display", "center");
-            weatherContainer.animate({
-                width: "320"
-            }, 500);
-        } else {
-            $(".forecast div").css("display", "inline-block");
-            weatherContainer.animate({
-                width: "380"
-            }, 500);
-        }
-        WeatherisVisible = true;
-    } else {
-        weatherContainer.animate({
-        width: "100"
-    }, 500);
-        WeatherisVisible = false;
-    }
+$.ajax({
+  url: "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json",
+  dataType: "json",
+  success: function(url) {
+    console.log(url);
+    var location = 'Silicon Valley';
+    var temp_c = url.current_observation.temp_c;
+    $(".conditions").html("Current temperature is: " + temp_c + "ºC" );
+  },
+  error:function(url) {
+            alert("Try to refresh the page, weather information could not be load");
+            }
 });
+
+map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
 
 // binding handler that init the ViewModel
   ko.applyBindings(new ViewModel());
 }
 
-//execute the init function when the DOM is ready
-google.maps.event.addDomListener(window,'load',initMap);

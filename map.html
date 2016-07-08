@@ -12,11 +12,10 @@
     <body>
         <header>
             <h2>Places to visit in Silicon Valley</h2>
-                <section id="weather-image-container">
+                <section>
                     <img src="img/weather-underground.png" alt="Weather Underground Logo">
-                    <div class="forecast">
                     <h4>Silicon Valley Weather Forecast</h4>
-                    <ul></ul>
+                    <div class="conditions">
                     </div>
                 </section>
     </header>
@@ -30,7 +29,7 @@
                     <hr>
                     <ul class="locationList" data-bind="foreach: placeList">
                         <li>
-                            <p><strong data-bind="text: name, click: $parent.show_details"></strong></p>
+                            <p><strong data-bind="text: name, click: $parent.show_info"></strong></p>
                             <span data-bind="text: city"></span>
                             <em><a data-bind="attr: { href: url }" target="_blank">visit Website</a></em>
                         </li>
@@ -45,12 +44,14 @@
         <footer>
 
         </footer>
-<!--Google Maps async-->
-        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
 <!--JS & lib-->
+        <script src="scripts/Map_Model.js"></script>
+        <script src="scripts/mapsapplication.js"></script>
         <script src="scripts/knockout-3.4.0.js"></script>
-        <script async src="scripts/mapsapplication.min.js"></script>
 <!-- add async js source to avoid render blocking -->
-        <script async src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <!--Google Maps async-->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
     </body>
 </html>

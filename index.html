@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, shrink-to-fit=no, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Geeky Map</title>
+    <!-- Font Styles-->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <!-- Custom CSS -->
+    <link href='css/style.css' rel='stylesheet'>
+    </head>
+    <body>
+    <div class="container-fluid">
+        <header>
+            <h2>Places to visit in Silicon Valley</h2>
+                <section>
+                    <img src="img/weather-underground.png" alt="Weather Underground Logo">
+                    <h4>Silicon Valley Weather Forecast</h4>
+                    <div class="conditions">
+                    </div>
+                </section>
+    </header>
+    </div>
+        <hr>
+
+            <div class="row" id="row-main">
+                <article class="col-md-3" id="sidebar">
+<!-- Search -->
+        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                <input id="searchField" data-bind="event: {keyup: filter}" type="text" placeholder='search by name or city' value="">
+                    <hr>
+                    <ul class="locationList" data-bind="foreach: placeList">
+                        <li>
+                            <p><strong data-bind="text: name, click: $parent.show_info"></strong></p>
+                            <span data-bind="text: city"></span>
+                            <em><a data-bind="attr: { href: url }" target="_blank">visit Website</a></em>
+                        </li>
+                    </ul>
+                </article>
+                <div class="col-md-9" id="content">
+                    <div class="btn-group" role="group" aria-label="Controls">
+                    <button type="button" class="btn btn-default toggle-sidebar">show | hide Place-List</button>
+                </div>
+                    <section id="map" class="map"></section>
+                </div>
+            </div>
+
+        <footer>
+
+        </footer>
+    <script>
+        $(document).ready(function () {
+            $(".toggle-sidebar").click(function () {
+                $("#sidebar").toggleClass("collapsed");
+                $("#content").toggleClass("col-md-12 col-md-9");
+
+                return false;
+            });
+        });
+    </script>
+<!--JS & lib-->
+        <script src="scripts/Map_Model.js"></script>
+        <script src="scripts/mapsapplication.js"></script>
+        <script src="scripts/knockout-3.4.0.js"></script>
+<!-- helper scripts -->
+        <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script>
+            function googleError() {
+            alert("Sorry, it failed to get google map resources, try to refresh the page.");
+        }
+
+        </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <!--Google Maps async-->
+        <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>
+    </body>
+</html>

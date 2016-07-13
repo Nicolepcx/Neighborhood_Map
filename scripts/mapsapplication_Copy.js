@@ -5,6 +5,8 @@ var map;
 //Creates a marker for each location
 var marker;
 
+var allLocations = [];
+
 // Creates a new map an changes the styles and color
 function initMap() {
     var styles = [
@@ -206,6 +208,17 @@ infowindow.addListener('closeclick', function() {
           });
 
 
+self.filterText = ko.observable("");
+
+self.filteredList = ko.computed(function(){
+    var filter = self.filterText().toLowerCase();
+    return ko.utils.arrayFilter(this.placeList(), function(placeList) {
+      return placeList.title.toLowerCase().indexOf(self.query().toLowerCase()) !== -1;
+    };// your filter function. make sure you return an array of what you want!
+}, this);
+
+
+/*
 //Filters map markers
   self.filter = function() {
     var s = $('#searchField').val();
@@ -223,7 +236,7 @@ infowindow.addListener('closeclick', function() {
       self.placeList()[i].marker.setMap(self.placeList()[i].marker.title.search(s) > -1 ? map : null);
     }
   };
-};
+};*/
 
 
 // This function takes in a color, and then creates a new marker

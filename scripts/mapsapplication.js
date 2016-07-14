@@ -1,4 +1,3 @@
-
 //map
 var map;
 
@@ -93,8 +92,6 @@ function initMap() {
   // Changes the marker style to "highlighted " marker by mouseover.
     var highlightedIcon = makeMarkerIcon('07eee6');
 
-var filterText = ko.observable("");
-
 //Sets the Knockout.js observables
 var Place = function(data, foursquare, map){
     var self = this;
@@ -112,8 +109,6 @@ var Place = function(data, foursquare, map){
     this.country = ko.observable();
     this.localWeather = ko.observable();
 };
-
-
 
 
 var ViewModel = function() {
@@ -206,23 +201,14 @@ infowindow.addListener('closeclick', function() {
           });
 
 
-//Filters map markers
-  self.filter = function() {
-    var s = $('#searchField').val();
-    console.log(s.toLowerCase().replace(/\b[a-z]/g,"KC"));
-    s = s.toLowerCase().replace(/\b[a-z]/g, function(self) {
-      console.log(self.toUpperCase());
-      return self.toUpperCase();
-    });
-    $(".locationList > li").each(function() {
-      console.log(this);
-      $(this).text().search(s) > -1 ? $(this).show() : $(this).hide();
-    });
-    for(var i = 0; i < self.placeList().length; i++) {
-      console.log(self.map);
-      self.placeList()[i].marker.setMap(self.placeList()[i].marker.title.search(s) > -1 ? map : null);
-    }
-  };
+  self.filterText = ko.observable("");
+
+
+  self.filteredList = ko.computed(function(){
+    //self.placeList()
+    console.log("filterText:", self.filterText());
+  });
+
 };
 
 
@@ -263,4 +249,3 @@ map = new google.maps.Map(document.getElementById('map'), mapOptions);
 // binding handler that init the ViewModel
   ko.applyBindings(new ViewModel());
 }
-

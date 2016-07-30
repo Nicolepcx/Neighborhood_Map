@@ -56,7 +56,9 @@ main,
         }
         .col-md-9 .width-12,
         .col-md-12 .width-9 {
+        display: flex; /* just hiding labels for demo purposes */
         }
+
         #sidebar {
 
             -webkit-transition: margin 0.3s ease;

@@ -229,17 +229,19 @@ infowindow.addListener('closeclick', function() {
 
 };*/
 
-  self.placeList = ko.observableArray([]);
-  self.filterText = ko.observable("");
-  self.placeList() = self.filteredList();
 
+  self.filterText = ko.observable("");
 
   self.filteredList = ko.computed(function() {
+    var filterText = self.filterText().toLowerCase();
     if (self.filterText().length > 0) {
-      return ko.utils.arrayFilter(placeList, function(location) {
-         return ko.utils.stringStartsWith(placeList.location.toLowerCase(), self.filterText())
-          console.log("filterText:", self.filterText());
+      return ko.utils.arrayFilter(self.placeList(), function(location) {
+        console.log(location.name);
+        var name = location.name.toLowerCase();
+         return name.indexOf(filterText) > -1;
       });
+    } else {
+      return self.placeList();
     }
   });
 }

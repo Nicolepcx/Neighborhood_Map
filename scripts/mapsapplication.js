@@ -77,6 +77,7 @@ function initMap() {
         zoom: 11,
         center: new google.maps.LatLng(37.387474, -122.057543),
         mapTypeControl: true,
+        scrollwheel: true,
         disableDefaultUI: false,
         styles: styles,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -100,7 +101,7 @@ var Place = function(data, foursquare, map){
     this.lng = ko.observable(data.lng);
     this.city = ko.observable(data.city);
     this.url = ko.observable(data.url);
-    this.s = ko.observableArray([]);
+    this.geekyPlaces = ko.observableArray([]);
     this.marker = ko.observable();
     this.rating = ko.observable();
     this.checkinCount = ko.observable();
@@ -201,7 +202,24 @@ infowindow.addListener('closeclick', function() {
           });
 
 
-  self.filterText = ko.observable("");
+/*  self.filterText = ko.observable("");
+
+  self.filteredList = ko.computed(function(){
+    var filter = self.filterText().toLowerCase();
+    return
+
+  }, this);
+
+
+  self.filteredList = ko.computed(function(){
+
+
+    console.log("filterText:", self.filterText());
+  });
+
+};
+*/
+/*  self.filterText = ko.observable("");
 
 
   self.filteredList = ko.computed(function(){
@@ -209,7 +227,22 @@ infowindow.addListener('closeclick', function() {
     console.log("filterText:", self.filterText());
   });
 
-};
+};*/
+
+  self.placeList = ko.observableArray([]);
+  self.filterText = ko.observable("");
+  self.placeList() = self.filteredList();
+
+
+  self.filteredList = ko.computed(function() {
+    if (self.filterText().length > 0) {
+      return ko.utils.arrayFilter(placeList, function(location) {
+         return ko.utils.stringStartsWith(placeList.location.toLowerCase(), self.filterText())
+          console.log("filterText:", self.filterText());
+      });
+    }
+  });
+}
 
 
 // This function takes in a color, and then creates a new marker

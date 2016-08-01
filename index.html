@@ -2,13 +2,15 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Geeky Map</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Page Styles and Font-->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800" rel="stylesheet">
-        <link href='css/bootstrap.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
     <!-- Custom CSS -->
-        <link href='css/style.min.css' rel='stylesheet'>
+        <link href='css/style.css' rel='stylesheet'>
 
     <body>
     <div class="container-fluid">
@@ -23,13 +25,13 @@
                 <div class="conditions">
                 </div> 
             </section> 
+                    <button type="button" class="btn btn-default toggle-sidebar">show/hide List</button>
 
         </header> 
     </div> 
         <hr>
-    <div class="row">
- 
-        <article class="col-md-3">
+    <div class="row" id="row-main">
+        <article class="col-md-3" id="sidebar">
  <!-- Search --> 
 <span aria-hidden="true" class=
             "glyphicon glyphicon-search"></span> 
@@ -45,7 +47,7 @@
                 </li>
             </ul> 
         </article> 
-        <div class="col-md-9">
+         <div class="col-md-9" id="content">
  
             <div class="map" id="map"></div> 
         </div> 
@@ -63,20 +65,14 @@
     </script> 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
     </script>
+    <script src="scripts/toggle-sidebar.js">
     <script>
              function googleError() {             alert("Sorry, it failed to get google map resources, try to refresh the page.");         }  
     </script> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
 
-    <!-- Menu Toggle Script -->
-    <script>
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-    </script>
     </script>  <!--Google Maps async--> 
-    <script async defer src=
+    <script async defer onerror="googleError" src=
     "https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap">
     </script>  
 </body>

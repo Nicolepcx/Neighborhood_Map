@@ -202,33 +202,6 @@ infowindow.addListener('closeclick', function() {
           });
 
 
-/*  self.filterText = ko.observable("");
-
-  self.filteredList = ko.computed(function(){
-    var filter = self.filterText().toLowerCase();
-    return
-
-  }, this);
-
-
-  self.filteredList = ko.computed(function(){
-
-
-    console.log("filterText:", self.filterText());
-  });
-
-};
-*/
-/*  self.filterText = ko.observable("");
-
-
-  self.filteredList = ko.computed(function(){
-    //self.placeList()
-    console.log("filterText:", self.filterText());
-  });
-
-};*/
-
 
   self.filterText = ko.observable("");
 
@@ -238,10 +211,13 @@ infowindow.addListener('closeclick', function() {
       return ko.utils.arrayFilter(self.placeList(), function(location) {
         console.log(location.name);
         var name = location.name.toLowerCase();
-         return name.indexOf(filterText) > -1;
+        return name.indexOf(filterText) > -1;
+        return locationItem.marker.setMap(null);
       });
     } else {
       return self.placeList();
+      return self.placeList().marker.setMap;
+      locationItem.marker().setMap(map);
     }
   });
 }
@@ -264,16 +240,16 @@ infowindow.addListener('closeclick', function() {
   });
 
 
-$.ajax({
-  url: "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json",
-  dataType: "json",
-  success: function(url) {
-    console.log(url);
-    var location = 'Silicon Valley';
-    var temp_c = url.current_observation.temp_c;
-    $(".conditions").html("Current temperature is: " + temp_c + "ºC" );
-  },
-  error:function(url) {
+  $.ajax({
+    url: "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json",
+    dataType: "json",
+    success: function(url) {
+      console.log(url);
+      var location = 'Silicon Valley';
+      var temp_c = url.current_observation.temp_c;
+      $(".conditions").html("Current temperature is: " + temp_c + "ºC" );
+    },
+    error:function(url) {
             alert("Try to refresh the page, weather information could not be load");
             }
 });

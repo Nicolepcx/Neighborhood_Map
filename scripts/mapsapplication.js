@@ -119,39 +119,39 @@ var ViewModel = function() {
 
 
 //Creates objects for each item in the Location Array
-  geekyPlaces.forEach(function(locationItem){
-    self.placeList.push( new Place(locationItem) );
+geekyPlaces.forEach(function(locationItem){
+  self.placeList.push( new Place(locationItem) );
+});
+
+
+self.placeList().forEach(function(locationItem){
+
+  marker = new google.maps.Marker({
+    position: new google.maps.LatLng(locationItem.lat(),locationItem.lng()),
+    map: map,
+    animation: google.maps.Animation.DROP,
+    icon: defaultIcon,
+    title: locationItem.name()
   });
-
-
-  self.placeList().forEach(function(locationItem){
-
-    marker = new google.maps.Marker({
-      position: new google.maps.LatLng(locationItem.lat(),locationItem.lng()),
-      map: map,
-      animation: google.maps.Animation.DROP,
-      icon: defaultIcon,
-      title: locationItem.name()
-    });
-    locationItem.marker = marker;
+  locationItem.marker = marker;
 
 
 //JSON get foursquaredata
 
-        var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' +
-                              locationItem.lat() + ',' + locationItem.lng() +
-                              '&intent=self&query=' + locationItem.name() +
-                              '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
-        $.getJSON(foursquareUrl, function(data){
-            results = data.response.groups[0].items[0].venue;
-            locationItem.name = results.name;
-            locationItem.rating = results.rating;
-            locationItem.rating = results.rating ? results.rating : "Rating unavailable";
-            locationItem.checkinCount = results.stats.checkinsCount;
-            locationItem.rcheckinCount = results.stats.checkinsCount ? results.stats.checkinsCount : "Check ins unavailable";
-        }).fail(function(jqxhr, textStatus, error)
-            { alert('There was an errors when retrieving the data. Please try refresh page or try again later.');
-        });
+var foursquareUrl = 'https://api.foursquare.com/v2/venues/explore?limit=1&ll=' +
+                      locationItem.lat() + ',' + locationItem.lng() +
+                      '&intent=self&query=' + locationItem.name() +
+                      '&client_id=PBLIDC53NETDZSL1OEND4SCI1AOPHG4MMTQ2PYV3O4I4EWDO&client_secret=I0IE4GRUSALOGYMYFQGF2IMSNMJJ52TH4AVLADMJAP5N01XJ&v=20140806';
+$.getJSON(foursquareUrl, function(data){
+    results = data.response.groups[0].items[0].venue;
+    locationItem.name = results.name;
+    locationItem.rating = results.rating;
+    locationItem.rating = results.rating ? results.rating : "Rating unavailable";
+    locationItem.checkinCount = results.stats.checkinsCount;
+    locationItem.rcheckinCount = results.stats.checkinsCount ? results.stats.checkinsCount : "Check ins unavailable";
+}).fail(function(jqxhr, textStatus, error)
+    { alert('There was an errors when retrieving the data. Please try refresh page or try again later.');
+});
 
 
           // Two event listeners - one for mouseover, one for mouseout,
@@ -163,14 +163,14 @@ var ViewModel = function() {
             this.setIcon(defaultIcon);
           });
 
-    //Toggles the bounce animation on the marker
-    function toggleBounce() {
-      if(locationItem.marker.getAnimation() !== null) {
-        locationItem.marker.setAnimation(null);
-      } else {
-        locationItem.marker.setAnimation(google.maps.Animation.BOUNCE);
-      }
-    }
+//Toggles the bounce animation on the marker
+function toggleBounce() {
+  if(locationItem.marker.getAnimation() !== null) {
+    locationItem.marker.setAnimation(null);
+  } else {
+    locationItem.marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
 
 
 
@@ -203,55 +203,57 @@ infowindow.addListener('closeclick', function() {
 
 
 
-  self.filterText = ko.observable("");
+self.filterText = ko.observable("");
 
-  self.filteredList = ko.computed(function() {
-    var filterText = self.filterText().toLowerCase();
-    if (self.filterText().length > 0) {
-      return ko.utils.arrayFilter(self.placeList(), function(location) {
-        console.log(location.name);
-        var name = location.name.toLowerCase();
-        return name.indexOf(filterText) > -1;
-        return locationItem.marker.setMap(null);
-      });
-    } else {
-      return self.placeList();
-      return self.placeList().marker.setMap;
-      locationItem.marker().setMap(map);
-    }
-  });
+self.filteredList = ko.computed(function() {
+  var filterText = self.filterText().toLowerCase();
+  if (self.filterText().length > 0) {
+    return ko.utils.arrayFilter(self.placeList(), function(location) {
+      console.log(location.name);
+      var name = location.name.toLowerCase();
+      var shouldVisible = name.indexOf(filterText) > -1;
+      location.marker.setVisible(shouldVisible);
+      return shouldVisible;
+    });
+  } else {
+    self.placeList().forEach(function(location) {
+    location.marker.setVisible(true);
+    });
+    return self.placeList();
+  }
+});
 }
 
 
 // This function takes in a color, and then creates a new marker
-      function makeMarkerIcon(markerColor) {
-        var markerImage = new google.maps.MarkerImage(
-          'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
-          '|40|_|%E2%80%A2',
-          new google.maps.Size(21, 34),
-          new google.maps.Point(0, 0),
-          new google.maps.Point(10, 34),
-          new google.maps.Size(21,34));
-        return markerImage;
-      }
+function makeMarkerIcon(markerColor) {
+  var markerImage = new google.maps.MarkerImage(
+    'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+    '|40|_|%E2%80%A2',
+    new google.maps.Size(21, 34),
+    new google.maps.Point(0, 0),
+    new google.maps.Point(10, 34),
+    new google.maps.Size(21,34));
+  return markerImage;
+}
 
   google.maps.event.addDomListener(window,'resize', function(){
     map.setCenter(new google.maps.LatLng(37.387474, -122.057543));
   });
 
 
-  $.ajax({
-    url: "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json",
-    dataType: "json",
-    success: function(url) {
-      console.log(url);
-      var location = 'Silicon Valley';
-      var temp_c = url.current_observation.temp_c;
-      $(".conditions").html("Current temperature is: " + temp_c + "ºC" );
-    },
-    error:function(url) {
-            alert("Try to refresh the page, weather information could not be load");
-            }
+$.ajax({
+  url: "http://api.wunderground.com/api/e6f14835285d1ad3/conditions/q/CA/San_Francisco.json",
+  dataType: "json",
+  success: function(url) {
+    console.log(url);
+    var location = 'Silicon Valley';
+    var temp_c = url.current_observation.temp_c;
+    $(".conditions").html("Current temperature is: " + temp_c + "ºC" );
+  },
+  error:function(url) {
+          alert("Try to refresh the page, weather information could not be load");
+          }
 });
 
 map = new google.maps.Map(document.getElementById('map'), mapOptions);

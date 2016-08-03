@@ -1,115 +1,156 @@
 
-/* Generic Styles */
+    /* Generic Styles */
 
-h2, h3 {
-    color: #0091ff;
-    text-align: center;
-}
-body, html {
-    height: 100%}
-
-* {
-    font-family: 'Open Sans', sans-serif;
-}
-h2 {
-    font-size: 2.6em;
-    font-weight: 800;
-}
-h3 {
-    font-size: 2em;
-    font-weight: 600;
-}
-body {
-    width: 100%;
-    margin: 0;
-    padding: 1em;
-}
-.map {
-    height: calc(100% - 10vh);
-    width: calc(100% - 5vw);
-}
-.col-md-9, .col-md-12, .row, main {
-    height: 100%}
+    h2, h3 {
+        color: #0091ff;
+        text-align: center;
+    }
 
 
-hr {
-    background: #D0D7D9;
-    height: .1em;
-    margin: 2em 0;
-    border: none;
-}
-#hide-weather, #weather-image-container {
-    display: block;
-    z-index: 4;
-    border-radius: 10px;
-}
-li {
-    margin: .6em;
-    color: #6a6f6f;
-}
-.weather-container {
-    position: absolute;
-    z-index: 4;
-    width: 100%;
-    height: 0;
-    top: 1em;
-    border-color: rgba(0, 145, 255, .6);
-}
-#weather-image-container {
-    background-color: rgba(255, 255, 255, .6);
-    width: 80px;
-    height: 60px;
-    padding-top: 5px;
-    right: 0;
-    margin: 0 0 0 auto;
-    border-color: rgba(0, 145, 255, .6);
-    overflow: hidden;
-}
+    body,
+    html {
+        height: 100%}
 
-.weather-container img {
-    display: inline-block;
-    margin-bottom: 5px;
-}
-ul {
-    list-style-type: none;
-}
 
-    .jumbotron {
-        margin-top: 30px;
+    * {
+        font-family: 'Open Sans', sans-serif;
     }
-    #content,
-    #sidebar {
-        min-height: 500px;
-    }
-    #row-main {
-        overflow-x: hidden; /* necessary to hide collapsed sidebar */
-    }
-    #content {
-        -webkit-transition: width 0.3s ease;
-        -moz-transition: width 0.3s ease;
-        -o-transition: width 0.3s ease;
-        transition: width 0.3s ease;
-    }
-    #content .btn-group {
-        margin-bottom: 10px;
-    }
-    .col-md-9 .width-12,
-    .col-md-12 .width-9 {
-        display: none; /* just hiding labels for demo purposes */
-    }
-    #sidebar {
 
-        -webkit-transition: margin 0.3s ease;
-        -moz-transition: margin 0.3s ease;
-        -o-transition: margin 0.3s ease;
-            transition: margin 0.3s ease;
+
+    h2 {
+        font-size: 2.6em;
+        font-weight: 800;
     }
-    .collapsed {
-        display: none; /* hide it for small displays */
+
+
+    h3 {
+        font-size: 2em;
+        font-weight: 600;
     }
-    @media (min-width: 992px) {
-           .collapsed {
-            display: block;
-            margin-left: -25%; /* same width as sidebar */
+
+
+    body {
+        width: 100%;
+        margin: 0;
+        padding: 1em;
+    }
+
+
+    .map {
+        height: calc(100% - 10vh);
+        width: calc(100% - 5vw);
+    }
+
+
+    .col-md-9, .col-md-12, .row, main {
+        height: 100%}
+
+
+    hr {
+        background: #D0D7D9;
+        height: .1em;
+        margin: 2em 0;
+        border: none;
+    }
+
+
+    #hide-weather, #weather-image-container {
+        display: block;
+        z-index: 4;
+        border-radius: 10px;
+    }
+
+
+    li {
+        margin: .6em;
+        color: #6a6f6f;
+    }
+
+
+    .weather-container {
+        position: absolute;
+        z-index: 4;
+        width: 100%;
+        height: 0;
+        top: 1em;
+        border-color: rgba(0, 145, 255, .6);
+    }
+
+
+    #weather-image-container {
+        background-color: rgba(255, 255, 255, .6);
+        width: 80px;
+        height: 60px;
+        padding-top: 5px;
+        right: 0;
+        margin: 0 0 0 auto;
+        border-color: rgba(0, 145, 255, .6);
+        overflow: hidden;
+    }
+
+
+    .weather-container img {
+        display: inline-block;
+        margin-bottom: 5px;
+    }
+
+
+    ul {
+        list-style-type: none;
+    }
+
+        .jumbotron {
+            margin-top: 30px;
         }
-    }
+
+
+        #content,
+        #sidebar {
+            min-height: 500px;
+        }
+
+
+        #row-main {
+            overflow-x: hidden; /* necessary to hide collapsed sidebar */
+        }
+
+
+        #content {
+            -webkit-transition: width 0.3s ease;
+            -moz-transition: width 0.3s ease;
+            -o-transition: width 0.3s ease;
+            transition: width 0.3s ease;
+        }
+
+
+        #content .btn-group {
+            margin-bottom: 10px;
+        }
+
+
+        .col-md-9 .width-12,
+        .col-md-12 .width-9 {
+            display: none; /* just hiding labels for demo purposes */
+        }
+
+
+        #sidebar {
+
+            -webkit-transition: margin 0.3s ease;
+            -moz-transition: margin 0.3s ease;
+            -o-transition: margin 0.3s ease;
+                transition: margin 0.3s ease;
+        }
+
+
+        .collapsed {
+            display: none; /* hide it for small displays */
+        }
+
+
+        @media (min-width: 992px) {
+               .collapsed {
+                display: block;
+                margin-left: -25%; /* same width as sidebar */
+            }
+        }

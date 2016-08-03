@@ -5,75 +5,75 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Geeky Map</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Page Styles and Font-->
+        <!--Page Styles and Font-->
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,800" rel="stylesheet">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
-    <!-- Custom CSS -->
+        <!-- Custom CSS -->
         <link href='css/style.css' rel='stylesheet'>
-
     <body>
-    <div class="container-fluid">
-
-        <header>
-
-            <h2>Places to visit in Silicon Valley</h2> 
-            <section>
+        <div class="container-fluid">
+            <header>
+                <h2>Places to visit in Silicon Valley</h2>
+ 
+                <section>
                 <img alt="Weather Underground Logo" src=
-                "img/weather-underground.png"> 
-                <h4>Silicon Valley Weather Forecast</h4> 
-                <div class="conditions">
-                </div> 
-            </section> 
-                    <button type="button" class="btn btn-default toggle-sidebar">show/hide List</button>
-
-        </header> 
-    </div> 
+                        "img/weather-underground.png"> 
+                    <h4>Silicon Valley Weather Forecast</h4>
+ 
+                    <div class="conditions">
+                    </div>
+ 
+                </section>
+ 
+                <button type="button" class="btn btn-default toggle-sidebar">show/hide List</button>
+            </header>
+ 
+        </div>
+ 
         <hr>
-    <div class="row" id="row-main">
-        <article class="col-md-3" id="sidebar">
+        <div class="row" id="row-main">
+            <article class="col-md-3" id="sidebar">
  <!-- Search --> 
-<span aria-hidden="true" class=
-            "glyphicon glyphicon-search"></span> 
-            <input data-bind="textInput: filterText" type="text" placeholder='search by name'> 
-            <hr>
+                <span aria-hidden="true" class=
+                    "glyphicon glyphicon-search"></span> 
+                <input data-bind="textInput: filterText" type="text" placeholder='search by name'> 
+                <hr>
  
-            <ul data-bind="foreach: filteredList">
-                <li> 
-                    <p><strong data-bind="text: name, click: $parent.show_info"></strong></p> 
-                    <span data-bind="text: city"></span>  <em><a data-bind=
-                    "attr: { href: url }" target="_blank">visit
-                    Website</a></em> 
-                </li>
-            </ul> 
-        </article> 
-         <div class="col-md-9" id="content">
+                <ul data-bind="foreach: filteredList">
+                    <li>
  
-            <div class="map" id="map"></div> 
-        </div> 
-    </div>  
-
-    <!--JS & lib--> 
-
-    <script src="scripts/Map_Model.js">
-    </script> 
-    <script src="scripts/mapsapplication.js">
-    </script> 
-    <script src="scripts/knockout-3.4.0.js">
-    </script> <!-- helper scripts --> 
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js">
-    </script> 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js">
-    </script>
-    <script src="scripts/toggle-sidebar.js"></script>
-    <script>
+                        <p><strong data-bind="text: name, click: $parent.show_info"></strong></p>
+ 
+                        <span data-bind="text: city"></span>  <em><a data-bind=
+                            "attr: { href: url }" target="_blank">visit
+                        Website</a></em> 
+                    </li>
+                </ul>
+ 
+            </article>
+ 
+            <div class="col-md-9" id="content">
+ 
+                <div class="map" id="map"></div>
+ 
+            </div>
+ 
+        </div>
+  
+        <!--JS & lib--> 
+        <script src="scripts/Map_Model.js"></script> 
+        <script src="scripts/mapsapplication.js"></script> 
+        <script src="scripts/knockout-3.4.0.js"></script> <!-- helper scripts --> 
+        <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="scripts/toggle-sidebar.js"></script>
+        <script>
              function googleError() {             alert("Sorry, it failed to get google map resources, try to refresh the page.");         }  
-    </script> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js">
 
-    </script>  <!--Google Maps async--> 
-    <script async defer onerror="googleError()" src=
-    "https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap">
-    </script>  
-</body>
+        </script> 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  <!--Google Maps async--> 
+        <script async defer onerror="googleError()" src=
+            "https://maps.googleapis.com/maps/api/js?key=AIzaSyCbVN6-Ai4jry0KcyYYS_91MAafhq3wt6s&libraries=geometry&v=3&callback=initMap"></script>  
+    </body>
 </html>
